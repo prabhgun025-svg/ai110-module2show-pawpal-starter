@@ -1,4 +1,5 @@
 
+
     class PetOwner {
         +str owner_id
         +str name
@@ -93,5 +94,3 @@
     Schedule "1" --> "*" ScheduleSlot : contains
     Schedule --> PetOwner : generates for
     ScheduleSlot --> Task : schedules
-    ScheduleSlot --> Pet : references
-```
