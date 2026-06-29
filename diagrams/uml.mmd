@@ -1,74 +1,129 @@
 classDiagram
+    %% PawPal Pet Care App - Class Diagram
+    %% Core domain model for scheduling and managing pet care tasks
+    
     class PetOwner {
-        String owner_id
-        String name
-        String email
-        add_pet(pet)
-        remove_pet(pet_id)
-        get_pets()
-        generate_daily_schedule()
+        -ownerId: String
+        -name: String
+        -email: String
+        -phone: String
+        -address: String
+        -pets: List~Pet~
+        +addPet(pet: Pet) void
+        +removePet(petId: String) void
+        +getPets() List~Pet~
+        +updateContactInfo(email: String, phone: String, address: String) void
+        +generateDailySchedule() Schedule
     }
-
+    
     class Pet {
-        String pet_id
-        String name
-        String species
-        int age
-        add_task(task)
-        remove_task(task_id)
-        get_tasks()
+        -petId: String
+        -name: String
+        -species: String
+        -breed: String
+        -age: int
+        -weight: double
+        -medicalNotes: String
+        -tasks: List~Task~
+        +addTask(task: Task) void
+        +editTask(taskId: String, updatedTask: Task) void
+        +removeTask(taskId: String) void
+        +getTasks() List~Task~
+        +getTasksByPriority(priority: Priority) List~Task~
     }
-
+    
     class Task {
-        String task_id
-        String name
-        String duration_minutes
-        String priority
-        String recurrence
-        bool is_completed
-        toggle_complete()
-        conflicts_with(other)
-        is_overdue()
+        -taskId: String
+        -name: String
+        -description: String
+        -durationMinutes: int
+        -priority: Priority
+        -recurrence: RecurrenceType
+        -preferredTime: LocalTime
+        -deadline: LocalTime
+        -isCompleted: boolean
+        +setPriority(priority: Priority) void
+        +setDuration(minutes: int) void
+        +setPreferredTime(time: LocalTime) void
+        +isOverdue() boolean
+        +conflictsWith(other: Task) boolean
+        +toggleComplete() void
     }
-
-    class Schedule {
-        String schedule_id
-        String date
-        int total_minutes
-        generate(tasks)
-        add_slot(slot)
-        remove_slot(slot_id)
-        validate()
-        display()
-    }
-
-    class ScheduleSlot {
-        String start_time
-        String end_time
-        String reasoning_note
-        get_duration()
-        overlaps_with(other)
-    }
-
+    
     class Priority {
         <<enumeration>>
         HIGH
         MEDIUM
         LOW
+        +urgencyScore() int
     }
-
+    
     class RecurrenceType {
         <<enumeration>>
         DAILY
         WEEKLY
         ONE_TIME
     }
+    
+    class ScheduleSlot {
+        -task: Task
+        -startTime: LocalTime
+        -endTime: LocalTime
+        -pet: Pet
+        -reasoningNote: String
+        +getDuration() int
+        +overlapsWith(other: ScheduleSlot) boolean
+        +toDisplayString() String
+    }
+    
+    class Schedule {
+        -scheduleId: String
+        -date: LocalDate
+        -owner: PetOwner
+        -slots: List~ScheduleSlot~
+        -skippedTasks: List~Task~
+        -totalMinutes: int
+        -generatedAt: LocalDateTime
+        +generate(tasks: List~Task~) void
+        +addSlot(slot: ScheduleSlot) void
+        +removeSlot(slotId: String) void
+        +display() String
+        +getReasoning() List~String~
+        +getSkippedTasks() List~Task~
+        +validate() boolean
+    }
+    
+    class ScheduleTest {
+        -testOwner: PetOwner
+        -testPet: Pet
+        -testSchedule: Schedule
+        +setUp() void
+        +tearDown() void
+        +buildTask(name: String, priority: Priority, duration: int) Task
+        +testPriorityOrdering() void
+        +testConflictDetection() void
+        +testDurationFitting() void
+        +testReasoningOutput() void
+    }
+    
+    %% Relationships
+    %% Core domain relationships
+    PetOwner "1" -- "*" Pet : owns
+    Pet "1" -- "*" Task : contains
+    Task o-- Priority : has
+    Task o-- RecurrenceType : has
+    
+    %% Schedule composition
+    Schedule "1" -- "*" ScheduleSlot : contains
+    Schedule -- PetOwner : generates for
+    
+    %% ScheduleSlot references
+    ScheduleSlot -- Task : schedules
+    ScheduleSlot -- Pet : references
+    
+    %% Test fixture dependencies
+    ScheduleTest --> PetOwner : uses
+    ScheduleTest --> Pet : uses
+    ScheduleTest --> Schedule : uses
+    ScheduleTest --> Task : builds
 
-    PetOwner "1" --> "*" Pet
-    Pet "1" --> "*" Task
-    Task --> Priority
-    Task --> RecurrenceType
-    Schedule "1" --> "*" ScheduleSlot
-    Schedule --> PetOwner
-    ScheduleSlot --> Task
-    ScheduleSlot --> Pet
