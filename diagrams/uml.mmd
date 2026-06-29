@@ -1,91 +1,74 @@
-# Pet Care App — Class Diagram
-
-```mermaid
 classDiagram
+    class PetOwner {
+        String owner_id
+        String name
+        String email
+        add_pet(pet)
+        remove_pet(pet_id)
+        get_pets()
+        generate_daily_schedule()
+    }
 
-class PetOwner {
-    String owner_id
-    String name
-    String email
-    String phone
-    String address
-    add_pet(pet)
-    remove_pet(pet_id)
-    get_pets()
-    generate_daily_schedule()
-}
+    class Pet {
+        String pet_id
+        String name
+        String species
+        int age
+        add_task(task)
+        remove_task(task_id)
+        get_tasks()
+    }
 
-class Pet {
-    String pet_id
-    String name
-    String species
-    String breed
-    int age
-    float weight
-    String medical_notes
-    add_task(task)
-    remove_task(task_id)
-    get_tasks()
-    get_tasks_by_priority(priority)
-}
+    class Task {
+        String task_id
+        String name
+        String duration_minutes
+        String priority
+        String recurrence
+        bool is_completed
+        toggle_complete()
+        conflicts_with(other)
+        is_overdue()
+    }
 
-class Task {
-    String task_id
-    String name
-    String description
-    int duration_minutes
-    String priority
-    String recurrence
-    String preferred_time
-    String deadline
-    bool is_completed
-    toggle_complete()
-    conflicts_with(other)
-    is_overdue()
-}
+    class Schedule {
+        String schedule_id
+        String date
+        int total_minutes
+        generate(tasks)
+        add_slot(slot)
+        remove_slot(slot_id)
+        validate()
+        display()
+    }
 
-class Priority {
-    <<enumeration>>
-    HIGH
-    MEDIUM
-    LOW
-}
+    class ScheduleSlot {
+        String start_time
+        String end_time
+        String reasoning_note
+        get_duration()
+        overlaps_with(other)
+    }
 
-class RecurrenceType {
-    <<enumeration>>
-    DAILY
-    WEEKLY
-    ONE_TIME
-}
+    class Priority {
+        <<enumeration>>
+        HIGH
+        MEDIUM
+        LOW
+    }
 
-class Schedule {
-    String schedule_id
-    String date
-    int total_minutes
-    String generated_at
-    generate(tasks)
-    add_slot(slot)
-    remove_slot(slot_id)
-    validate()
-    display()
-    get_skipped_tasks()
-}
+    class RecurrenceType {
+        <<enumeration>>
+        DAILY
+        WEEKLY
+        ONE_TIME
+    }
 
-class ScheduleSlot {
-    String start_time
-    String end_time
-    String reasoning_note
-    get_duration()
-    overlaps_with(other)
-    to_display_string()
-}
-
-PetOwner "1" --> "*" Pet
-Pet "1" --> "*" Task
-Task --> Priority
-Task --> RecurrenceType
-Schedule "1" --> "*" ScheduleSlot
-Schedule --> PetOwner
-ScheduleSlot --> Task
-ScheduleSlot --> Pet
-```
+    PetOwner "1" --> "*" Pet
+    Pet "1" --> "*" Task
+    Task --> Priority
+    Task --> RecurrenceType
+    Schedule "1" --> "*" ScheduleSlot
+    Schedule --> PetOwner
+    ScheduleSlot --> Task
+    ScheduleSlot --> Pet
