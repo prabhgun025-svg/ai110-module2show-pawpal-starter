@@ -42,17 +42,43 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
-## 🖥️ Sample Output
+## 🖥️ Sample Output - from Terminal
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+Schedule is valid (no time conflicts)
 
-```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
-```
+======================================================================
+TODAY'S SCHEDULE
+======================================================================
+┌─── TODAY'S SCHEDULE ─────────────────────────────────June 29, 2026 ───┐
+│                                                            │
+│ 08:00 ║ Buddy - Morning Walk                              │
+│        ║ Duration: 30m | Priority: HIGH | Deadline: 10:00 │
+│        ║ 30-minute walk around the neighborhood           │
+│        ║                                                  │
+│ 09:00 ║ Whiskers - Feed Whiskers                          │
+│        ║ Duration: 10m | Priority: HIGH | Deadline: 10:00 │
+│        ║ Give Whiskers her regular meal                   │
+│        ║                                                  │
+│ 12:00 ║ Buddy - Feed Buddy                                │
+│        ║ Duration: 10m | Priority: HIGH | Deadline: 13:00 │
+│        ║ Give Buddy his regular meal                      │
+│        ║                                                  │
+│ 14:00 ║ Whiskers - Clean Litter Box                       │
+│        ║ Duration: 15m | Priority: MEDIUM | Deadline: 15:00│
+│        ║ Clean and refill Whiskers' litter box            │
+│        ║                                                  │
+│ 16:00 ║ Whiskers - Grooming                               │
+│        ║ Duration: 20m | Priority: LOW | Deadline: 17:00  │
+│        ║ Brush Whiskers and check for any issues          │
+│        ║                                                  │
+│ 18:00 ║ Buddy - Play Session                              │
+│        ║ Duration: 45m | Priority: MEDIUM | Deadline: 19:30│
+│        ║ Interactive play with toys and fetch             │
+│        ║                                                  │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+======================================================================
+
 
 ## 🧪 Testing PawPal+
 
