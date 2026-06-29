@@ -1,44 +1,47 @@
+# Pet Care App — Class Diagram
+
+```mermaid
+classDiagram
+
     class PetOwner {
-        +str owner_id
-        +str name
-        +str email
-        +str phone
-        +str address
-        +list~Pet~ pets
-        +add_pet(pet: Pet) None
-        +remove_pet(pet_id: str) None
-        +get_pets() list~Pet~
-        +generate_daily_schedule() Schedule
+        String owner_id
+        String name
+        String email
+        String phone
+        String address
+        add_pet(pet)
+        remove_pet(pet_id)
+        get_pets()
+        generate_daily_schedule()
     }
 
     class Pet {
-        +str pet_id
-        +str name
-        +str species
-        +str breed
-        +int age
-        +float weight
-        +str medical_notes
-        +list~Task~ tasks
-        +add_task(task: Task) None
-        +remove_task(task_id: str) None
-        +get_tasks() list~Task~
-        +get_tasks_by_priority(priority: Priority) list~Task~
+        String pet_id
+        String name
+        String species
+        String breed
+        int age
+        float weight
+        String medical_notes
+        add_task(task)
+        remove_task(task_id)
+        get_tasks()
+        get_tasks_by_priority(priority)
     }
 
     class Task {
-        +str task_id
-        +str name
-        +str description
-        +int duration_minutes
-        +Priority priority
-        +RecurrenceType recurrence
-        +time preferred_time
-        +time deadline
-        +bool is_completed
-        +toggle_complete() None
-        +conflicts_with(other: Task) bool
-        +is_overdue() bool
+        String task_id
+        String name
+        String description
+        int duration_minutes
+        String priority
+        String recurrence
+        String preferred_time
+        String deadline
+        bool is_completed
+        toggle_complete()
+        conflicts_with(other)
+        is_overdue()
     }
 
     class Priority {
@@ -46,7 +49,6 @@
         HIGH
         MEDIUM
         LOW
-        +urgency_score() int
     }
 
     class RecurrenceType {
@@ -57,34 +59,27 @@
     }
 
     class Schedule {
-        +str schedule_id
-        +date date
-        +PetOwner owner
-        +list~ScheduleSlot~ slots
-        +list~Task~ skipped_tasks
-        +int total_minutes
-        +datetime generated_at
-        +generate(tasks: list~Task~) None
-        +add_slot(slot: ScheduleSlot) None
-        +remove_slot(slot_id: str) None
-        +validate() bool
-        +display() str
-        +get_reasoning() list~str~
-        +get_skipped_tasks() list~Task~
+        String schedule_id
+        String date
+        int total_minutes
+        String generated_at
+        generate(tasks)
+        add_slot(slot)
+        remove_slot(slot_id)
+        validate()
+        display()
+        get_skipped_tasks()
     }
 
     class ScheduleSlot {
-        +Task task
-        +Pet pet
-        +time start_time
-        +time end_time
-        +str reasoning_note
-        +get_duration() int
-        +overlaps_with(other: ScheduleSlot) bool
-        +to_display_string() str
+        String start_time
+        String end_time
+        String reasoning_note
+        get_duration()
+        overlaps_with(other)
+        to_display_string()
     }
 
-    %% Associations
     PetOwner "1" --> "*" Pet : owns
     Pet "1" --> "*" Task : contains
     Task --> Priority : has
@@ -92,3 +87,5 @@
     Schedule "1" --> "*" ScheduleSlot : contains
     Schedule --> PetOwner : generates for
     ScheduleSlot --> Task : schedules
+    ScheduleSlot --> Pet : references
+```
